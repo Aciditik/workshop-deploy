@@ -41,6 +41,8 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:latest
             ghcr.io/${{ github.repository }}:${{ github.sha }}
+          build-args: |
+            GITHUB_TOKEN=${{ secrets.GH_PAT }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
