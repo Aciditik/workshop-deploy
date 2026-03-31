@@ -2,35 +2,35 @@
 # Combined single-container build for workshop-api + workshop-cli
 # Runs both the Express API (port 4000) and Next.js frontend (port 3000)
 # with nginx as reverse proxy on port $PORT (default 8080)
+# Clones source repos directly (no submodule dependency)
 # =============================================================================
 
 # --- Stage 1: Build the API ---
 FROM node:20-alpine AS api-builder
 
+RUN apk add --no-cache git
+
 WORKDIR /build/api
 
-COPY workshop-api/package*.json ./
+RUN git clone --depth=1 https://github.com/Aciditik/workshop-api.git .
+
 RUN npm ci
 
-COPY workshop-api/prisma ./prisma
 RUN npx prisma generate
 
-COPY workshop-api/tsconfig.json ./
-COPY workshop-api/src ./src
 RUN npm run build
 
 # --- Stage 2: Build the Frontend ---
 FROM node:20-alpine AS frontend-builder
 
+RUN apk add --no-cache git
+
 WORKDIR /build/frontend
 
-COPY workshop-cli/package*.json ./
+RUN git clone --depth=1 https://github.com/Aciditik/workshop-cli.git .
+
 RUN npm ci
 
-COPY workshop-cli/ .
-
-# At build time, the API will be served from the same origin via nginx proxy
-# so we use a relative-ish URL that nginx will route
 ARG NEXT_PUBLIC_API_URL=""
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
@@ -44,10 +44,10 @@ RUN apk add --no-cache nginx supervisor
 WORKDIR /app
 
 # --- API setup ---
-COPY workshop-api/package*.json ./api/
+COPY --from=api-builder /build/api/package*.json ./api/
 RUN cd api && npm ci --omit=dev
 
-COPY workshop-api/prisma ./api/prisma
+COPY --from=api-builder /build/api/prisma ./api/prisma
 RUN cd api && npx prisma generate
 
 COPY --from=api-builder /build/api/dist ./api/dist
