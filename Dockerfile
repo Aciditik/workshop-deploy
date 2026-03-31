@@ -10,12 +10,9 @@ FROM node:20-alpine AS api-builder
 
 RUN apk add --no-cache git
 
-ARG GITHUB_TOKEN
-
 WORKDIR /build/api
 
-RUN git clone --depth=1 https://x-access-token:${GITHUB_TOKEN}@github.com/Aciditik/workshop-api.git . \
-    && git remote set-url origin https://github.com/Aciditik/workshop-api.git
+RUN git clone --depth=1 https://github.com/Aciditik/workshop-api.git .
 
 RUN npm ci
 
@@ -28,12 +25,9 @@ FROM node:20-alpine AS frontend-builder
 
 RUN apk add --no-cache git
 
-ARG GITHUB_TOKEN
-
 WORKDIR /build/frontend
 
-RUN git clone --depth=1 https://x-access-token:${GITHUB_TOKEN}@github.com/Aciditik/workshop-cli.git . \
-    && git remote set-url origin https://github.com/Aciditik/workshop-cli.git
+RUN git clone --depth=1 https://github.com/Aciditik/workshop-cli.git .
 
 RUN npm ci
 
