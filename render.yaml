@@ -1,0 +1,13 @@
+# Render Blueprint - deploy with "New > Blueprint" on render.com
+services:
+  - type: web
+    name: workshop-app
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 8080

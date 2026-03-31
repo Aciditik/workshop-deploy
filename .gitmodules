@@ -1,0 +1,6 @@
+[submodule "workshop-cli"]
+	path = workshop-cli
+	url = https://github.com/Aciditik/workshop-cli.git
+[submodule "workshop-api"]
+	path = workshop-api
+	url = https://github.com/Aciditik/workshop-api.git

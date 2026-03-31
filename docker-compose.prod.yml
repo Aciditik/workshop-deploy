@@ -1,0 +1,22 @@
+version: "3.8"
+
+# Single-container production build
+# Usage: docker compose -f docker-compose.prod.yml up --build
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ""
+    ports:
+      - "${PORT:-8080}:${PORT:-8080}"
+    environment:
+      - PORT=${PORT:-8080}
+      - JWT_SECRET=${JWT_SECRET:-super-secret-change-me}
+    volumes:
+      - app-data:/app/data
+
+volumes:
+  app-data:
