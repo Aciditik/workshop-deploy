@@ -37,9 +37,14 @@ ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 RUN npm run build
 
 # --- Stage 3: Production image ---
-FROM node:20-alpine
+FROM node:20-slim
 
-RUN apk add --no-cache nginx supervisor
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    nginx \
+    supervisor \
+    openssl \
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
