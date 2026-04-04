@@ -12,15 +12,16 @@ RUN apk add --no-cache git
 
 WORKDIR /build/api
 
-# Cache buster to force fresh clone
-ARG CACHEBUST=1
+# Cache buster to force fresh clone - UPDATED TO FORCE REBUILD
+ARG CACHEBUST=3
 RUN git clone --depth=1 https://github.com/Aciditik/workshop-api.git .
 
 RUN npm ci
 
 RUN npx prisma generate
 
-RUN npm run build
+# Clean build to ensure fresh compilation
+RUN rm -rf dist/ && npm run build
 
 # Force rebuild timestamp
 RUN echo "API build: $(date)" > /build/api-build.txt
