@@ -20,8 +20,8 @@ RUN npm ci
 
 RUN npx prisma generate
 
-# Clean build to ensure fresh compilation
-RUN rm -rf dist/ && npm run build
+# Clean build to ensure fresh compilation (handle if dist doesn't exist)
+RUN rm -rf dist/ || true && npm run build
 
 # Force rebuild timestamp
 RUN echo "API build: $(date)" > /build/api-build.txt
