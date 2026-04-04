@@ -22,6 +22,9 @@ RUN npx prisma generate
 
 RUN npm run build
 
+# Force rebuild timestamp
+RUN echo "API build: $(date)" > /build/api-build.txt
+
 # --- Stage 2: Build the Frontend ---
 FROM node:20-alpine AS frontend-builder
 
@@ -57,7 +60,7 @@ COPY --from=api-builder /build/api/package*.json ./api/
 RUN cd api && npm ci --omit=dev
 
 COPY --from=api-builder /build/api/prisma ./api/prisma
-RUN cd api && npx prisma generate
+RUN cd api && npx prisma generate && rm -rf node_modules/.prisma && npx prisma generate
 
 COPY --from=api-builder /build/api/dist ./api/dist
 
