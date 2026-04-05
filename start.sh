@@ -14,8 +14,8 @@ DATABASE_URL="file:/app/data/prod.db" npx prisma migrate deploy
 # Regenerate Prisma Client to match the migrated schema
 DATABASE_URL="file:/app/data/prod.db" npx prisma generate
 
-# Seed admin user if it doesn't exist
-node /app/seed.js
+# Seed admin user if it doesn't exist (run from api directory where node_modules exists)
+node /app/api/seed.js
 
 cd /app
 

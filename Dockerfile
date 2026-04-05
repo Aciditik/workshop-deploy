@@ -74,7 +74,7 @@ COPY supervisord.conf /etc/supervisord.conf
 
 # --- Startup script and seed ---
 COPY start.sh /app/start.sh
-COPY seed.js /app/seed.js
+COPY seed.js /app/api/seed.js
 RUN chmod +x /app/start.sh
 
 # Data directory for SQLite
