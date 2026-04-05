@@ -12,8 +12,8 @@ RUN apk add --no-cache git
 
 WORKDIR /build/api
 
-# Cache buster to force fresh clone - UPDATED FOR TYPESCRIPT FIX
-ARG CACHEBUST=5
+# Cache buster to force fresh clone
+ARG CACHEBUST=20260405_2330
 RUN git clone --depth=1 https://github.com/Aciditik/workshop-api.git .
 
 RUN npm ci
@@ -21,9 +21,6 @@ RUN npm ci
 RUN npx prisma generate
 
 RUN npm run build
-
-# Force rebuild timestamp
-RUN echo "API build: $(date)" > /build/api-build.txt
 
 # --- Stage 2: Build the Frontend ---
 FROM node:20-alpine AS frontend-builder
@@ -33,7 +30,7 @@ RUN apk add --no-cache git
 WORKDIR /build/frontend
 
 # Cache buster to force fresh clone
-ARG CACHEBUST=1
+ARG CACHEBUST=20260405_2330
 RUN git clone --depth=1 https://github.com/Aciditik/workshop-cli.git .
 
 RUN npm ci
@@ -60,7 +57,7 @@ COPY --from=api-builder /build/api/package*.json ./api/
 RUN cd api && npm ci --omit=dev
 
 COPY --from=api-builder /build/api/prisma ./api/prisma
-RUN cd api && npx prisma generate && rm -rf node_modules/.prisma && npx prisma generate
+RUN cd api && npx prisma generate
 
 COPY --from=api-builder /build/api/dist ./api/dist
 
