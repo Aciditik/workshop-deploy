@@ -12,8 +12,8 @@ RUN apk add --no-cache git
 
 WORKDIR /build/api
 
-# Cache buster to force fresh clone
-ARG CACHEBUST=20260405_2337
+# Cache buster to force fresh clone (update timestamp to pull latest commits)
+ARG CACHEBUST=20260405_2344
 RUN git clone --depth=1 https://github.com/Aciditik/workshop-api.git .
 
 RUN npm ci
@@ -30,7 +30,7 @@ RUN apk add --no-cache git
 WORKDIR /build/frontend
 
 # Cache buster to force fresh clone
-ARG CACHEBUST=20260405_2337
+ARG CACHEBUST=20260405_2344
 RUN git clone --depth=1 https://github.com/Aciditik/workshop-cli.git .
 
 RUN npm ci
@@ -72,8 +72,9 @@ COPY nginx.conf /etc/nginx/nginx.conf.template
 # --- Supervisor config ---
 COPY supervisord.conf /etc/supervisord.conf
 
-# --- Startup script ---
+# --- Startup script and seed ---
 COPY start.sh /app/start.sh
+COPY seed.js /app/seed.js
 RUN chmod +x /app/start.sh
 
 # Data directory for SQLite
