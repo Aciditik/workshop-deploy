@@ -77,9 +77,6 @@ COPY start.sh /app/start.sh
 COPY seed.js /app/api/seed.js
 RUN chmod +x /app/start.sh
 
-# Data directory for SQLite
-RUN mkdir -p /app/data
-
 EXPOSE 8080
 
 CMD ["/app/start.sh"]

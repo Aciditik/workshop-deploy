@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcryptjs");
-const prisma = new PrismaClient({ datasources: { db: { url: "file:/app/data/prod.db" } } });
+const prisma = new PrismaClient();
 
 async function seed() {
   try {
