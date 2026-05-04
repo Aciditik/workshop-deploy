@@ -13,11 +13,7 @@ RUN apk add --no-cache git
 WORKDIR /build/api
 
 # Cache buster to force fresh clone (update timestamp to pull latest commits)
-<<<<<<< HEAD
-ARG CACHEBUST=20260504_1723
-=======
-ARG CACHEBUST=20260504_2313
->>>>>>> b391f8a (Bump CACHEBUST for chronometre deployment)
+ARG CACHEBUST=20260505_0105
 RUN git clone --depth=1 https://github.com/Aciditik/workshop-api.git .
 
 RUN npm ci
