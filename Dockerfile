@@ -30,11 +30,7 @@ RUN apk add --no-cache git
 WORKDIR /build/frontend
 
 # Cache buster to force fresh clone
-<<<<<<< HEAD
-ARG CACHEBUST=20260723_0946
-=======
 ARG CACHEBUST=20260912_1900
->>>>>>> 76a85ec (Update cachebust to deploy sourceTournamentId persistence fix)
 RUN git clone --depth=1 https://github.com/Aciditik/workshop-cli.git .
 
 RUN npm ci
